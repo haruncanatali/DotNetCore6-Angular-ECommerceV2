@@ -12,6 +12,8 @@ namespace ETicaretAPI.Domain.Entities.Concrete
         public Guid Id { get; set; }
         public string Name { get; set; }
         public string Surname { get; set; }
+        public DateTime UpdatedTime { get; set; }
+        public DateTime CreatedTime { get; set; }
 
         public ICollection<Order> Orders { get; set; }
     }

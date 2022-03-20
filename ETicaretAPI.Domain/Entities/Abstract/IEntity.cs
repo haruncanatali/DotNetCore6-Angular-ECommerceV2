@@ -9,5 +9,7 @@ namespace ETicaretAPI.Domain.Entities.Abstract
     public interface IEntity
     {
         Guid Id { get; set; }
+        public DateTime CreatedTime { get; set; }
+        public DateTime UpdatedTime { get; set; }
     }
 }

@@ -54,20 +54,42 @@ namespace ETicaretAPI.API.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("update")]
+        public async Task<IActionResult> UpdateProduct(string productId)
+        {
+            try
+            {
+                return Ok(await UpdateEntity(productId));
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { e.Message });
+            }
+        }
+
         public async Task<IQueryable> GetValuesFromFakeDb()
         {
             var result  = await _productWriteRepository.AddRangeAsync(new()
             {
-                new(){Id = Guid.NewGuid(),Name="Kalem",Price = 5,CreatedDate = DateTime.UtcNow,Stock = 100},
-                new(){Id = Guid.NewGuid(),Name="Silgi",Price = 2,CreatedDate = DateTime.UtcNow, Stock = 100},
-                new(){Id = Guid.NewGuid(),Name="Defter",Price = 15,CreatedDate = DateTime.UtcNow, Stock = 100},
-                new(){Id = Guid.NewGuid(),Name="Kuru Boya",Price = 25,CreatedDate = DateTime.UtcNow, Stock = 100},
-                new(){Id = Guid.NewGuid(),Name="Pastel Boya",Price = 30,CreatedDate = DateTime.UtcNow, Stock = 100},
-                new(){Id = Guid.NewGuid(),Name="Cetvel",Price = 3,CreatedDate = DateTime.UtcNow, Stock = 100},
+                new(){Id = Guid.NewGuid(),Name="Kalem",Price = 5,Stock = 100},
+                new(){Id = Guid.NewGuid(),Name="Silgi",Price = 2, Stock = 100},
+                new(){Id = Guid.NewGuid(),Name="Defter",Price = 15, Stock = 100},
+                new(){Id = Guid.NewGuid(),Name="Kuru Boya",Price = 25, Stock = 100},
+                new(){Id = Guid.NewGuid(),Name="Pastel Boya",Price = 30, Stock = 100},
+                new(){Id = Guid.NewGuid(),Name="Cetvel",Price = 3, Stock = 100},
             });
             await _productWriteRepository.SaveAsync();
             var results = _productReadRepository.GetAll();
             return _productReadRepository.GetAll();
+        }
+
+        public async Task<Product> UpdateEntity(string id)
+        {
+            var result = await _productReadRepository.GetByIdAsync(id);
+            result.Name = "Deneme";
+            await _productWriteRepository.SaveAsync();
+            return result;
         }
     }
 }
